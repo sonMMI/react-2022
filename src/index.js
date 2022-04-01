@@ -7,7 +7,7 @@ import axios from 'axios'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = 'http://localhost:5000/api'
 
 ReactDOM.render(
   <React.StrictMode>
