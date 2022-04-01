@@ -95,7 +95,7 @@ const ProductsCard = ({ product }) => {
             <span>{product.title}</span>
           </Link>
         </h3>
-        <h4>{product.price}</h4>
+        <h4>$ {product.price}</h4>
 
         <div>
           <Button edit>Edit</Button>

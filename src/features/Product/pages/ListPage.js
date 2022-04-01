@@ -7,7 +7,6 @@ const ListPage = () => {
 
   useEffect(() => {
     axios.get('/products').then((res) => {
-      console.log(res)
       setProducts(res.data.products)
     })
   }, [])
