@@ -1,19 +1,20 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import ProductInfo from '../components/ProductInfo'
+import useQuery from '../hooks/useQuery'
 
 const DetailPage = () => {
   const { id } = useParams()
-  const [product, setProduct] = useState([])
 
-  useEffect(() => {
-    axios.get(`/products/${id}`).then((res) => {
-      setProduct(res.data)
-    })
-  }, [id])
+  const { data: product, loading, error } = useQuery(`/products/${id}`)
 
-  return <div>{product && <ProductInfo product={product} />}</div>
+  return (
+    <div>
+      {product && <ProductInfo product={product} />}
+      {loading && <h2>Loading...</h2>}
+      {error && <h2>{error}</h2>}
+    </div>
+  )
 }
 
 export default DetailPage
