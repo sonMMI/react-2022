@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import ProductsCard from './ProductsCard'
 
@@ -12,11 +12,8 @@ const ListProduct = styled.div`
 `
 
 const Products = React.memo(({ products }) => {
-  const ref = useRef(0)
-
   return (
     <ListProduct>
-      <h2>render: {ref.current++}</h2>
       {products.map((product) => (
         <ProductsCard key={product._id} product={product} />
       ))}

@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Pagination from '../components/Pagination'
 import Products from '../components/Products'
+import Sorting from '../components/Sorting'
 import useQuery from '../hooks/useQuery'
 
 const ListPage = () => {
@@ -9,13 +10,14 @@ const ListPage = () => {
   const [limit, setLimit] = useState(5)
   const { search } = useLocation()
 
-  const page = useMemo(() => {
+  const { page, sort } = useMemo(() => {
     const page = new URLSearchParams(search).get('page') || 1
-    return Number.parseInt(page)
+    const sort = new URLSearchParams(search).get('sort') || '-createdAt'
+    return { page: Number.parseInt(page), sort: sort }
   }, [search])
 
   const { data, loading, error } = useQuery(
-    `/products?limit=${limit}&page=${page}`
+    `/products?limit=${limit}&page=${page}&sort=${sort}`
   )
 
   useEffect(() => {
@@ -27,15 +29,13 @@ const ListPage = () => {
     return Math.ceil(data.count / limit)
   }, [data?.count, limit])
 
-  const ref = useRef(0)
-
   return (
     <div>
-      <h2>render: {ref.current++}</h2>
+      <Sorting page={page} sort={sort} />
       <Products products={products} />
       {loading && <h2>Loading...</h2>}
       {error && <h2>{error}</h2>}
-      <Pagination totalPages={totalPages} page={page} />
+      <Pagination totalPages={totalPages} page={page} sort={sort} />
     </div>
   )
 }

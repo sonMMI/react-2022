@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import usePagination from '../hooks/usePagination'
 
@@ -31,17 +31,15 @@ const StylePagination = styled.div`
   }
 `
 
-const Pagination = React.memo(({ totalPages, page }) => {
+const Pagination = React.memo(({ totalPages, page, sort }) => {
   const { firstArr, lastArr, isActive, prev, next, jump } = usePagination(
     totalPages,
-    page
+    page,
+    sort
   )
-
-  const ref = useRef(0)
 
   return (
     <StylePagination>
-      <h2>render: {ref.current++}</h2>
       <button onClick={prev}>&laquo;</button>
       {firstArr.map((num) => (
         <button
