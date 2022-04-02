@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMyContext } from '../context/store'
 import useCustomRouter from '../hooks/useCustomRouter'
 
 const StyleSort = styled.div`
@@ -21,7 +22,9 @@ const StyleSort = styled.div`
   }
 `
 
-const Sorting = React.memo(({ page, sort }) => {
+const Sorting = React.memo(() => {
+  //props Sorting: page, sort
+  const { page, sort } = useMyContext()
   const { pushQuery } = useCustomRouter()
 
   const handleChange = (e) => {

@@ -31,12 +31,10 @@ const StylePagination = styled.div`
   }
 `
 
-const Pagination = React.memo(({ totalPages, page, sort }) => {
-  const { firstArr, lastArr, isActive, prev, next, jump } = usePagination(
-    totalPages,
-    page,
-    sort
-  )
+const Pagination = React.memo(({ totalPages }) => {
+  // props Pagination: page, sort
+  const { firstArr, lastArr, isActive, prev, next, jump } =
+    usePagination(totalPages) // props Pagination: page, sort
 
   return (
     <StylePagination>
