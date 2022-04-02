@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledSearchForm = styled.form`
@@ -33,10 +34,21 @@ const StyledSearchForm = styled.form`
 `
 
 const SearchForm = () => {
+  const inputRef = useRef()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const value = inputRef.current.value
+    if (!value.trim()) return
+
+    return navigate(`/search/${value}`)
+  }
+
   return (
     <div>
-      <StyledSearchForm>
-        <input type="text" />
+      <StyledSearchForm onSubmit={handleSubmit}>
+        <input type="text" ref={inputRef} />
         <button>Search</button>
       </StyledSearchForm>
     </div>

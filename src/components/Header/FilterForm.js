@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledForm = styled.form`
@@ -57,12 +58,23 @@ const StyledForm = styled.form`
 `
 
 const FilterForm = () => {
+  const inputRef = useRef()
+  const selectRef = useRef('lt')
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const value = inputRef.current.value
+    const option = selectRef.current.value
+    if (!value.trim()) return
+    return navigate(`/filter/${option}/${value}`)
+  }
   return (
     <div>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
         <div>
-          <input type="text" placeholder="0" required />
-          <select>
+          <input type="text" placeholder="0" required ref={inputRef} />
+          <select ref={selectRef}>
             <option value="lt" title="lesser than">
               LT
             </option>
