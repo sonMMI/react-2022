@@ -1,5 +1,9 @@
-import React from 'react'
+import axios from 'axios'
+import Modal from 'components/Header/Modal'
+import ProductForm from 'components/Header/ProductForm'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import styled, { css } from 'styled-components'
 
 const StyledCard = styled.div`
@@ -85,6 +89,16 @@ const Button = styled.button`
 `
 
 const ProductsCard = ({ product }) => {
+  const [openProduct, setOpenProduct] = useState(false)
+
+  const handleDelete = (id) => {
+    if (window.confirm('🆘Are you sure you want to delete?🆘')) {
+      axios
+        .delete(`/products/${id}`)
+        .then(toast.success('Delete product successfully🎉'))
+    }
+  }
+
   return (
     <StyledCard>
       <img src={product.image} alt={product.title} />
@@ -98,10 +112,21 @@ const ProductsCard = ({ product }) => {
         <h4>$ {product.price}</h4>
 
         <div>
-          <Button edit>Edit</Button>
-          <Button delete>Delete</Button>
+          <Button edit onClick={() => setOpenProduct(true)}>
+            Edit
+          </Button>
+          <Button delete onClick={() => handleDelete(product._id)}>
+            Delete
+          </Button>
         </div>
       </Box>
+
+      {/*Product Form */}
+      {openProduct && (
+        <Modal titleText="Update Product" setOpen={setOpenProduct}>
+          <ProductForm btnText="Update" data={product} />
+        </Modal>
+      )}
     </StyledCard>
   )
 }

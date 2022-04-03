@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import FilterForm from './FilterForm'
 import Modal from './Modal'
+import ProductForm from './ProductForm'
 import SearchForm from './SearchForm'
 
 const StyledHeader = styled.div`
@@ -34,15 +36,25 @@ const StyledHeader = styled.div`
 const Header = () => {
   const [openSearch, setOpenSearch] = useState(false)
   const [openFilter, setOpenFilter] = useState(false)
+  const [openCreate, setOpenCreate] = useState(false)
 
   return (
     <StyledHeader>
       <nav>
-        <p>Home</p>
-        <p>Create Product</p>
+        <p>
+          <Link to="/">Home</Link>
+        </p>
+        <p onClick={() => setOpenCreate(true)}>Create Product</p>
         <p onClick={() => setOpenSearch(true)}>Search</p>
         <p onClick={() => setOpenFilter(true)}>Filter</p>
       </nav>
+
+      {/* Modal Create Product */}
+      {openCreate && (
+        <Modal titleText="Create Product" setOpen={setOpenCreate}>
+          <ProductForm btnText="Add" />
+        </Modal>
+      )}
 
       {/* Modal Search */}
       {openSearch && (
