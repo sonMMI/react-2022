@@ -19,7 +19,8 @@ const ListPage = () => {
   // }, [search])
 
   const { data, loading, error } = useQuery(
-    `/products?limit=${limit}&page=${page}&sort=${sort}`
+    `/products?limit=${limit}&page=${page}&sort=${sort}`,
+    { saveCache: true }
   )
 
   useEffect(() => {
