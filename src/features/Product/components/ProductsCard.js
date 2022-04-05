@@ -1,10 +1,10 @@
-import axios from 'axios'
+import { deleteProduct } from 'api/productAPI'
 import Modal from 'components/Header/Modal'
 import ProductForm from 'components/Header/ProductForm'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import styled, { css } from 'styled-components'
+import useMutation from '../hooks/useMutation'
 
 const StyledCard = styled.div`
   max-width: 350px;
@@ -90,12 +90,11 @@ const Button = styled.button`
 
 const ProductsCard = ({ product }) => {
   const [openProduct, setOpenProduct] = useState(false)
+  const { mutate, loading } = useMutation()
 
   const handleDelete = (id) => {
     if (window.confirm('🆘Are you sure you want to delete?🆘')) {
-      axios
-        .delete(`/products/${id}`)
-        .then(toast.success('Delete product successfully🎉'))
+      mutate(() => deleteProduct(id))
     }
   }
 
@@ -115,8 +114,12 @@ const ProductsCard = ({ product }) => {
           <Button edit onClick={() => setOpenProduct(true)}>
             Edit
           </Button>
-          <Button delete onClick={() => handleDelete(product._id)}>
-            Delete
+          <Button
+            delete
+            onClick={() => handleDelete(product._id)}
+            disabled={loading}
+          >
+            {loading ? 'Loading...' : 'Delete'}
           </Button>
         </div>
       </Box>

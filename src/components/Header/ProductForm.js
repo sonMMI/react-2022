@@ -1,6 +1,6 @@
-import axios from 'axios'
+import { createProduct, updateProduct } from 'api/productAPI'
+import useMutation from 'features/Product/hooks/useMutation'
 import React, { useRef } from 'react'
-import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 const StyledProductForm = styled.div`
@@ -31,6 +31,7 @@ const StyledProductForm = styled.div`
 
 const ProductForm = ({ btnText, data }) => {
   const multiRef = useRef()
+  const { mutate, loading } = useMutation()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -44,13 +45,10 @@ const ProductForm = ({ btnText, data }) => {
       const newArr = { ...newData, price: Number.parseInt(newData.price) }
       const result = shallowEqual(newArr, data)
       if (result) return
-      axios
-        .put(`/products/${data._id}`, newData)
-        .then(toast.success('Update product successfully🎉'))
+
+      mutate(() => updateProduct({ id: data._id, newData }))
     } else {
-      axios
-        .post('/products', newData)
-        .then(toast.success('Create product successfully🎉'))
+      mutate(() => createProduct(newData))
     }
   }
 
@@ -105,7 +103,9 @@ const ProductForm = ({ btnText, data }) => {
           defaultValue={data?.image}
         />
       </form>
-      <button onClick={handleSubmit}>{btnText}</button>
+      <button onClick={handleSubmit} disabled={loading}>
+        {btnText}
+      </button>
     </StyledProductForm>
   )
 }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMyContext } from '../context/store'
 
@@ -18,7 +18,6 @@ const useQuery = (url, opt = DEFAULT_OPTION.saveCache) => {
   const option = { ...DEFAULT_OPTION, ...opt }
 
   const clearCache = useCallback(() => {
-    console.log('render')
     if (Object.keys(cache.current).length >= option.sizeCache)
       return (cache.current = {})
   }, [cache, option.sizeCache])
@@ -62,7 +61,14 @@ const useQuery = (url, opt = DEFAULT_OPTION.saveCache) => {
       here = false
       clearTimeout(delayDebounce)
     }
-  }, [url, cache, clearCache, option.saveCache, option.refetchInterval])
+  }, [
+    url,
+    cache,
+    clearCache,
+    option.saveCache,
+    option.refetchInterval,
+    option.refetching,
+  ])
 
   return { data, loading, error }
 }
