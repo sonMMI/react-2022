@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import useMutation from '../hooks/useMutation'
+import LazyLoadImg from './LazyLoadImg'
 
 const StyledCard = styled.div`
   max-width: 350px;
@@ -21,13 +22,6 @@ const StyledCard = styled.div`
   &:hover {
     box-shadow: none;
     cursor: pointer;
-  }
-
-  & > img {
-    width: 100%;
-    height: 300px;
-    display: block;
-    object-fit: cover;
   }
 `
 
@@ -100,7 +94,7 @@ const ProductsCard = ({ product }) => {
 
   return (
     <StyledCard>
-      <img src={product.image} alt={product.title} />
+      <LazyLoadImg url={product.image} title={product.title} />
 
       <Box>
         <h3>
