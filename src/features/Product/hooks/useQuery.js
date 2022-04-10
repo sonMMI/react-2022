@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 import { toast } from 'react-toastify'
+import { initialState, reduce } from '../context/reducers/queryReducer'
 import { useMyContext } from '../context/store'
 
 const DEFAULT_OPTION = {
@@ -10,9 +11,7 @@ const DEFAULT_OPTION = {
 }
 
 const useQuery = (url, opt = DEFAULT_OPTION.saveCache) => {
-  const [data, setData] = useState()
-  const [loading, setLoading] = useState()
-  const [error, setError] = useState()
+  const [query, dispatch] = useReducer(reduce, initialState)
 
   const { cache } = useMyContext()
   const option = { ...DEFAULT_OPTION, ...opt }
@@ -26,30 +25,32 @@ const useQuery = (url, opt = DEFAULT_OPTION.saveCache) => {
     let here = true
 
     if (cache.current[url]) {
-      setData(cache.current[url]) // Data client === Data server when update => delete return
-    } else {
-      setLoading(true)
+      // Data client === Data server when update => delete return
+      // setData(cache.current[url])
+      dispatch({ type: 'SUCCESS', payload: cache.current[url] })
     }
 
     const delayDebounce = setTimeout(
       () => {
+        if (!cache.current[url]) {
+          dispatch({ type: 'LOADING' })
+        }
+
         axios
           .get(url)
           .then((res) => {
             if (!here) return
-            setData(res.data)
+            // setData(res.data)
+            dispatch({ type: 'SUCCESS', payload: res.data })
             if (option.saveCache) {
               cache.current[url] = res.data
             }
           })
           .catch((err) => {
             if (!here) return
-            setError(err.response.data.msg)
+            // setError(err.response.data.msg)
+            dispatch({ type: 'ERROR', payload: err.response.data.msg })
             toast.error(err.response.data.msg)
-          })
-          .finally(() => {
-            if (!here) return
-            setLoading(false)
           })
       },
       cache.current[url] ? option.refetchInterval : 0
@@ -70,7 +71,7 @@ const useQuery = (url, opt = DEFAULT_OPTION.saveCache) => {
     option.refetching,
   ])
 
-  return { data, loading, error }
+  return { ...query }
 }
 
 export default useQuery
