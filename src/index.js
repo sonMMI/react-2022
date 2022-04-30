@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import App from './App'
 import './index.css'
 
-axios.defaults.baseURL = 'http://localhost:5000/api'
+axios.defaults.baseURL = 'https://restful-nodejs.herokuapp.com/api'
 
 ReactDOM.render(
   <React.StrictMode>
