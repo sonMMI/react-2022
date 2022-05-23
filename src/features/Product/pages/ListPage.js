@@ -44,7 +44,7 @@ const ListPage = () => {
       {/* <Products products={products} /> */}
       {data && <Products products={data.products} />}
       {isLoading && <h2>Loading...</h2>}
-      {error && <h2>{error}</h2>}
+      {error && <h2>{error.message}</h2>}
       <Pagination totalPages={totalPages} />
       {/* Props Pagination: page={page} sort={sort}  */}
     </div>

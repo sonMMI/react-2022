@@ -14,7 +14,7 @@ const DetailPage = () => {
     <div>
       {product && <ProductInfo product={product} />}
       {isLoading && <h2>Loading...</h2>}
-      {error && <h2>{error}</h2>}
+      {error && <h2>{error.message}</h2>}
     </div>
   )
 }
