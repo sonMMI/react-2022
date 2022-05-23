@@ -7,6 +7,10 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import App from './App'
 import './index.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+const queryClient = new QueryClient()
 
 axios.defaults.baseURL = 'https://restful-nodejs.herokuapp.com/api'
 
@@ -14,8 +18,11 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ContextProvider>
-        <App />
-        <ToastContainer />
+        <QueryClientProvider client={queryClient}>
+          <App />
+          <ToastContainer />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
       </ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
